@@ -14,15 +14,17 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    images: {
+      type: [String],
+      default: [],
+    },
     favoriteCount: {
       type: Number,
       default: 0,
     },
-    tags: {
-      type: [String],
-    },
-    images: {
-      type: [String],
+    isLikes: {
+      type: Boolean,
+      default: false,
     },
   },
   {

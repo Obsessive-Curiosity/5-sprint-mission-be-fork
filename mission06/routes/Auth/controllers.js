@@ -1,12 +1,13 @@
 import express from "express";
 
-import { isLoggedIn, isNotLoggedIn } from "../../middlewares/index.js";
-import { join, login, logout } from "./service.js";
+import { verifyToken } from "../../middlewares/index.js";
+import { signup, login, logout, refresh } from "./service.js";
 
 const router = express.Router();
 
-router.post("/join", isNotLoggedIn, join);
-router.post("/login", isNotLoggedIn, login);
-router.get("/logout", isLoggedIn, logout);
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/refresh", refresh);
+router.get("/logout", verifyToken, logout);
 
 export default router;

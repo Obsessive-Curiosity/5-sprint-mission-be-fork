@@ -3,8 +3,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import passport from "passport";
-import passportConfig from "./passport/index.js";
 import router from "./routes/index.js";
 
 dotenv.config();
@@ -12,7 +10,6 @@ const PORT = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 const app = express();
-passportConfig(); // passport 설정
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,8 +26,7 @@ app.use(
     name: "session-cookie",
   })
 );
-app.use(passport.initialize()); // req 객체에 passport 저장
-app.use(passport.session()); // req.session에 passport 저장
+app.use(cookieParser());
 
 mongoose
   .connect(DATABASE_URL)

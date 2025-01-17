@@ -1,15 +1,19 @@
-export const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(403).send({ message: "로그인이 필요합니다." });
-  }
-};
+import jwt from "jsonwebtoken";
 
-export const isNotLoggedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) {
+const SECRET_KEY = process.env.JWT_SECRET;
+
+export const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
+
+  if (!token) {
+    return res.status(403).json({ message: "토큰이 제공되지 않았습니다." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded;
     next();
-  } else {
-    res.status(403).send({ message: "이미 로그인 되어있습니다." });
+  } catch (error) {
+    return res.status(401).json({ message: "유효하지 않은 토큰입니다." });
   }
 };
