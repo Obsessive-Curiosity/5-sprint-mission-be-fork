@@ -1,9 +1,10 @@
 import express from "express";
-import { addLikes, deleteLikes } from "./service.js";
+import { verifyToken } from "../../middlewares/index.js";
+import { addLikes, cancelLikes } from "./service.js";
 
 const router = express.Router();
 
-router.post("/", addLikes);
-router.delete("/", deleteLikes);
+router.post("/", verifyToken, addLikes);
+router.delete("/", verifyToken, cancelLikes);
 
 export default router;

@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyToken } from "../../middlewares/index.js";
 import {
   getProductList,
   getProduct,
@@ -9,10 +10,10 @@ import {
 
 const router = express.Router();
 
-router.get("/", getProductList);
-router.get("/:id", getProduct);
-router.post("/", createProduct);
-router.patch("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.get("/", verifyToken, getProductList);
+router.get("/:id", verifyToken, getProduct);
+router.post("/", verifyToken, createProduct);
+router.patch("/:id", verifyToken, updateProduct);
+router.delete("/:id", verifyToken, deleteProduct);
 
 export default router;

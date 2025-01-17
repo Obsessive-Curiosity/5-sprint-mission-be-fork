@@ -26,7 +26,6 @@ app.use(
     name: "session-cookie",
   })
 );
-app.use(cookieParser());
 
 mongoose
   .connect(DATABASE_URL)

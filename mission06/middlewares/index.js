@@ -11,8 +11,9 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = decoded;
-    next();
+    req.userId = decoded.userId; // decoded 객체에서 userId를 추출하여 저장
+
+    next(); // 다음 미들웨어로 진행
   } catch (error) {
     return res.status(401).json({ message: "유효하지 않은 토큰입니다." });
   }

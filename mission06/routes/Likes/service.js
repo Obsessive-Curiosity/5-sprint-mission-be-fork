@@ -22,9 +22,9 @@ export const addLikes = async (req, res) => {
   }
 };
 
-export const deleteLikes = async (req, res) => {
+export const cancelLikes = async (req, res) => {
   try {
-    const { productId, userId } = req.body;
+    const { productId, userId } = req.query;
     if (!productId || !userId) {
       return res.send({ message: "누락된 데이타가 있습니다." });
     }

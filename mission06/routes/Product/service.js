@@ -3,10 +3,10 @@ import Tag from "../../models/Tag.js";
 import Likes from "../../models/Likes.js";
 import _ from "lodash";
 
-// tags, likes 들 모두 가져와야 함 ㅇㅇ
 export const getProductList = async (req, res) => {
   try {
-    const { page, pageSize, orderBy, keyword, userId } = req.query;
+    const { page, pageSize, orderBy, keyword } = req.query;
+    const userId = req.userId;
 
     if (!page || !pageSize || !orderBy) {
       return res.status(400).send({ message: "누락된 쿼리가 있습니다." });
@@ -21,6 +21,7 @@ export const getProductList = async (req, res) => {
     const totalList = await Product.find(filterCondition);
     const totalCount = totalList.length;
 
+    // sort 순서 생성
     const orderByCondition =
       orderBy === "recent" ? { createdAt: -1 } : { favoriteCount: -1 };
 
@@ -56,7 +57,7 @@ export const getProductList = async (req, res) => {
 export const getProduct = async (req, res) => {
   try {
     const { id } = req.params; // 경로 매개변수에서 id 가져오기
-    const { userId } = req.query; // 쿼리 매개변수에서 userId 가져오기
+    const userId = req.userId;
 
     if (!id) {
       return res.status(404).send("상품의 id가 존재하지 않습니다.");
@@ -89,6 +90,7 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
     const { tags, ...props } = req.body;
+    const userId = req.userId;
     const newTags = [];
 
     const newProduct = await Product.create(props);
@@ -122,6 +124,7 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { tags, ...props } = req.body; // tags 새로 업데이트 될 tags
+    const userId = req.userId;
 
     const id = req.params.id; // 상품 id
     if (!id) {
@@ -179,6 +182,8 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
+    const userId = req.userId;
+
     const id = req.params.id; // 상품 id
     if (!id) {
       return res
